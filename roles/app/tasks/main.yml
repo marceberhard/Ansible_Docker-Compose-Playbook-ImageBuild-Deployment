@@ -1,0 +1,12 @@
+- include: pull.yml
+  tags: install
+
+- include: build-img-ui.yml
+  tags: install
+
+- include: build-img-app.yml
+  tags: install
+
+- include: actions.yml
+  tags: install
+  

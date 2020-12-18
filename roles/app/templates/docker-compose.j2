@@ -1,0 +1,42 @@
+version: '2.4'
+services:
+
+  db:
+    image: postgres:10.15-alpine
+    volumes:
+      - app-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=***
+      - POSTGRES_USER={{ dbuser }}
+      - POSTGRES_PASSWORD={{ dbpassword }}
+    networks:
+      - storage
+
+  app-app:
+    image: app-app:{{ versionka }}
+    environment:
+      - DB_SERVER=db
+      - POSTGRES_DB=***
+      - POSTGRES_USER={{ dbuser }}
+      - POSTGRES_PASSWORD={{ dbpassword }}
+    networks:
+      - backend
+      - storage
+
+  app-ui:
+    image: app-ui:{{ versionku }}
+    ports:
+      - 8080:80
+    networks:
+      - ui
+      - backend
+
+networks:
+  ui:
+  backend:
+    internal: true
+  storage:
+    internal: true
+
+volumes:
+  app-data:

@@ -1,0 +1,44 @@
+- name: Update apt packages
+  become: yes
+  tags: install
+  apt:
+    update_cache: "yes"
+    force_apt_get: "yes"
+
+- name: Install dependencies
+  become: yes
+  tags: install
+  apt:  
+    name:
+    - git
+    - python3-pip
+    - acl
+
+- name: Add user 
+  become: yes
+  tags: install
+  user:
+    name: "{{ username }}"
+    comment: "Service User for Kanban Application"
+    append: yes
+    shell: /bin/bash
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+
+
+#- name: Remove user 'cldinf'
+#  tags: uninstall, never
+#  become: yes
+#  user: 
+#    name: "{{ username }}"
+#    state: absent
+
+#- name: Remove service user home
+#  tags: uninstall, never
+#  become: yes
+#  file:
+#    path: "/home/{{ username }}"
+#    state: absent
+
+

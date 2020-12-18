@@ -1,0 +1,9 @@
+- name: Build ui image
+  become: yes
+  tags: install
+  docker_image:
+    name: app-ui
+    tag: "{{versionku}}"
+    build:
+      path: "{{ fsdst }}/app-ui"
+    source: build

@@ -1,0 +1,8 @@
+- name: Build app image
+  become: yes
+  docker_image:
+    name: app-app
+    tag: "{{versionka}}"
+    build:
+      path: "{{ fsdst }}/kanban-app"
+    source: build

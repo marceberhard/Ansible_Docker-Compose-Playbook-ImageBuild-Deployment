@@ -1,0 +1,49 @@
+- name: Install Docker
+  become: yes
+  tags: install
+  apt:
+    name:
+    - docker
+    - docker-compose
+    - docker.io
+    state: latest  
+
+- name: Move cldinf to Docker Group
+  become: yes
+  tags: install
+  user:
+    name: "{{ username }}"
+    group: 'docker'
+    append: yes
+
+- name: Set folder permission for docker
+  become: yes
+  tags: install
+  file:
+    path: "/home/{{ username }}/.docker"
+    recurse: yes
+    owner: "cldinf"
+    group: "cldinf"
+    mode: 0775
+
+- name: Enable service docker
+  become: yes
+  tags: install
+  service:
+    name: docker
+    enabled: yes
+
+
+- name: Uninstall Docker
+  become: yes
+  tags: uninstall, never
+  apt:
+    name:
+    - docker
+    - docker-compose
+    - docker.io
+    state: absent
+    purge: yes
+    autoclean: yes
+    autoremove: yes
+      

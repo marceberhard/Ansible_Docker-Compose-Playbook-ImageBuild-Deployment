@@ -1,0 +1,33 @@
+- name: Create and start services
+  tags: install
+  become: yes
+  become_user: "{{ username }}"
+  community.general.docker_compose:
+    project_src: "{{ fsdst }}"
+  register: output
+
+- name: start services
+  tags: start, never
+  become: yes
+  community.general.docker_compose:
+    project_src: "{{ fsdst }}"
+    build: no
+  register: output
+
+- name: Prune images and containers
+  tags: never,uninstall
+  community.general.docker_prune:
+    images: yes
+    networks: yes
+    volumes: yes
+    builder_cache: yes
+
+- name: delete repo
+  become: yes
+  tags: never,uninstall
+  command: rmdir -f /home/***/app
+
+- name: delete docker-compose.yml
+  become: yes
+  tags: never,update
+  command: rm -f /home/***/app/docker-compose.yml

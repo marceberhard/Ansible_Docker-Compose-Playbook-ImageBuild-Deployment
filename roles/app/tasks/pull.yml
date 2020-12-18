@@ -1,0 +1,21 @@
+- name: Create dir for cloned repos
+  become: yes
+  file: 
+    path: "{{ fsdst }}/repos"
+    owner: "{{ username }}"
+    group: docker      
+    mode: 0755
+    state: directory
+      
+- name: Pull GitLab Repo
+  become: yes
+  git: 
+    repo: "https://oauth2:tokenhere@domain.ch/***/****/ansible/app-board.git"
+    dest: "{{ fsdst }}/repos"
+    force: yes
+
+- name: Generate docker-compose.yml
+  become: yes
+  template:
+    src: docker-compose.j2
+    dest: "{{ fsdst }}/docker-compose.yml"

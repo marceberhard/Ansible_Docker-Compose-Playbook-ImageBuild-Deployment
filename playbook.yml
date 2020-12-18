@@ -1,0 +1,23 @@
+- name: app*
+  hosts: all
+  vars_files:
+    - vault.yml
+  vars:
+    ansible_sudo_pass: "{{ srvuserpw }}"
+  roles: 
+  - role: server
+    vars:
+      username: "{{ srvsvcuser }}"
+  - role: docker
+    vars:
+      username: "{{ srvsvcuser }}"
+  - role: kanban
+    vars:
+      username: "{{ srvsvcuser }}"
+      password: "{{ srvsvcuserpw }}"
+      token: "{{ token }}"
+      fsdst: "/home/{{ srvsvcuser }}/app"
+      dbuser: "{{ appdbuser }}"
+      dbpassword: "{{ appdbpw }}"
+      versionka: 1.1
+      versionku: 1.1
